@@ -1,0 +1,22 @@
+{
+  "name": "점심 메뉴 룰렛",
+  "short_name": "점심룰렛",
+  "description": "오늘의 점심 메뉴를 룰렛으로 골라보세요!",
+  "icons": [
+    {
+      "src": "cd9bdfe0-4fcc-4b29-a787-c2c0759a2656.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "cd9bdfe0-4fcc-4b29-a787-c2c0759a2656.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f0f0f0",
+  "theme_color": "#348fea",
+  "orientation": "portrait-primary"
+}

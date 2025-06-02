@@ -3,9 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA 및 오픈그래프/공유용 메타태그 -->
   <title>점심 메뉴 룰렛</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#348fea"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="cd9bdfe0-4fcc-4b29-a787-c2c0759a2656.png">
+  <link rel="apple-touch-icon" href="cd9bdfe0-4fcc-4b29-a787-c2c0759a2656.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="점심 메뉴 룰렛">
+  <meta property="og:description" content="오늘의 점심을 룰렛으로 재미있게 골라보세요!">
+  <meta property="og:image" content="ChatGPT Image 2025년 6월 3일 오전 12_58_22.png">
+  <meta property="og:url" content="https://github.com/egocredo82/lunch">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="점심 메뉴 룰렛">
+  <meta name="twitter:description" content="오늘의 점심을 룰렛으로 재미있게 골라보세요!">
+  <meta name="twitter:image" content="ChatGPT Image 2025년 6월 3일 오전 12_58_22.png">
+
   <style>
-    /* 1. 화면 중앙에 정렬하기 위한 기본 스타일 */
     body {
       display: flex;
       justify-content: center;
@@ -14,53 +31,45 @@
       margin: 0;
       background: #f0f0f0;
       font-family: 'Noto Sans KR', sans-serif;
-      overflow: hidden; /* 팝업 시 스크롤 방지 */
+      overflow: hidden;
     }
-
-    /* 2. 룰렛 컨테이너 및 버튼을 중앙 정렬 */
     .container {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-
     #roulette-wrapper {
       position: relative;
-      width: 500px;
-      height: 500px;
+      width: 80vw;
+      height: 80vw;
+      max-width: 500px;
+      max-height: 500px;
     }
-
     #roulette-container {
       width: 100%;
       height: 100%;
       transform-origin: 50% 50%;
     }
-
-    /* 3. 캔버스 */
     #wheel {
       width: 100%;
       height: 100%;
       display: block;
     }
-
-    /* 4. 역삼각형 포인터 (꼭지점이 휠 테두리 상단에 위치, 아래 가리키도록 뒤집음) */
     #pointer {
       position: absolute;
-      top: -10px; /* 휠 테두리 상단(20px)에서 삼각형 높이(30px)를 빼서 꼭지점이 정확히 테두리 상단에 위치 */
+      top: -10px;
       left: 50%;
-      transform: translateX(-50%) rotate(180deg); /* 아래 방향으로 향함 */
+      transform: translateX(-50%) rotate(180deg);
       width: 0;
       height: 0;
       border-left: 20px solid transparent;
       border-right: 20px solid transparent;
-      border-bottom: 30px solid #e74c3c; /* 역삼각형의 기본 형태 */
+      border-bottom: 30px solid #e74c3c;
       z-index: 10;
     }
-
-    /* 5. 메뉴 추가 인터페이스 (핀 위 위치) */
     #add-menu {
       position: absolute;
-      top: -60px; /* 포인터 꼭지점 위에 위치 */
+      top: -60px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -70,7 +79,6 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       z-index: 15;
     }
-
     #menu-input {
       padding: 6px;
       font-size: 14px;
@@ -78,7 +86,6 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-
     #add-button {
       margin-left: 6px;
       padding: 6px 10px;
@@ -90,12 +97,7 @@
       border-radius: 4px;
       transition: background 0.3s;
     }
-
-    #add-button:hover {
-      background: #1e8449;
-    }
-
-    /* 6. 룰렛 및 버튼 스타일 */
+    #add-button:hover { background: #1e8449; }
     #spin-button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -107,19 +109,13 @@
       border-radius: 5px;
       transition: background 0.3s;
     }
-
-    #spin-button:hover {
-      background: #1c5980;
-    }
-
-    /* 7. 메뉴 리스트 스타일 */
+    #spin-button:hover { background: #1c5980; }
     #menu-list {
       margin-top: 15px;
       text-align: center;
       font-size: 14px;
       color: #333;
     }
-
     #menu-list span {
       display: inline-block;
       margin: 0 8px;
@@ -127,18 +123,14 @@
       background: #fff;
       border-radius: 4px;
       border: 1px solid #ccc;
-      cursor: pointer; /* 클릭 가능함을 표시 */
+      cursor: pointer;
     }
-
-    /* 8. 결과 표시 스타일 */
     #result {
       margin-top: 15px;
       font-size: 18px;
       font-weight: bold;
       color: #2c3e50;
     }
-
-    /* 9. 팝업 오버레이 스타일 */
     #popup-overlay {
       position: fixed;
       top: 0;
@@ -154,7 +146,6 @@
       opacity: 0;
       transition: opacity 0.3s;
     }
-
     #popup-content {
       background: #fff;
       padding: 20px 30px;
@@ -165,30 +156,28 @@
       position: relative;
       overflow: hidden;
     }
-
-    /* 10. 이모지 팡팡 애니메이션 */
     .emoji {
       position: absolute;
       font-size: 24px;
       animation: floatUp 1.5s ease-out forwards;
     }
-
     @keyframes floatUp {
-      0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-100px) scale(1.5);
-      }
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
     }
   </style>
+  <!-- PWA 서비스워커 등록 -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js');
+      });
+    }
+  </script>
 </head>
 <body>
   <div class="container">
     <div id="roulette-wrapper">
-      <!-- 메뉴 추가 인터페이스: 핀 위에 위치 -->
       <div id="add-menu">
         <input type="text" id="menu-input" placeholder="메뉴 추가" />
         <button id="add-button">추가</button>
@@ -199,39 +188,29 @@
       </div>
     </div>
     <button id="spin-button">룰렛 돌리기</button>
-
-    <!-- 메뉴 리스트 표시 -->
     <div id="menu-list"></div>
-
-    <!-- 결과 표시 영역 -->
     <div id="result">선택된 메뉴: -</div>
   </div>
-
-  <!-- 팝업 오버레이 -->
   <div id="popup-overlay">
     <div id="popup-content"></div>
   </div>
-
-  <!-- GSAP 라이브러리 (CDN) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
   <script>
-    // 1. 메뉴 데이터 정의
     let menuItems = ["김밥", "라면", "떡볶이", "돈까스", "초밥", "파스타"];
-
-    // 2. 캔버스 초기화
     const canvas = document.getElementById("wheel");
     const ctx = canvas.getContext("2d");
-    const size = 500;
-    canvas.width = size;
-    canvas.height = size;
-    const center = { x: size / 2, y: size / 2 };
-    const radius = size / 2 - 20;
+    let size, center, radius;
     const menuListDiv = document.getElementById("menu-list");
     const resultDiv = document.getElementById("result");
     const popupOverlay = document.getElementById("popup-overlay");
     const popupContent = document.getElementById("popup-content");
-
-    // 3. 메뉴 리스트 갱신 함수 (클릭 시 항목 제거 기능 유지)
+    function setCanvasSize() {
+      size = canvas.parentElement.clientWidth;
+      canvas.width = size;
+      canvas.height = size;
+      center = { x: size / 2, y: size / 2 };
+      radius = size / 2 - 20;
+    }
     function renderMenuList() {
       menuListDiv.innerHTML = "";
       menuItems.forEach((item, index) => {
@@ -245,16 +224,13 @@
         menuListDiv.appendChild(span);
       });
     }
-
-    // 4. 파이차트 그리기 함수 (변경 없음)
     function drawWheel() {
       const num = menuItems.length;
-      const sliceAngle = (2 * Math.PI) / num;
+      if (num === 0) return;
       ctx.clearRect(0, 0, size, size);
-
       for (let i = 0; i < num; i++) {
-        const startAngle = i * sliceAngle;
-        const endAngle = startAngle + sliceAngle;
+        const startAngle = i * ((2 * Math.PI) / num);
+        const endAngle = startAngle + ((2 * Math.PI) / num);
         ctx.fillStyle = `hsl(${(i * 360) / num}, 70%, 60%)`;
         ctx.strokeStyle = "#fff";
         ctx.lineWidth = 2;
@@ -264,8 +240,7 @@
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
-
-        const textAngle = startAngle + sliceAngle / 2;
+        const textAngle = startAngle + ((2 * Math.PI) / num) / 2;
         const textX = center.x + Math.cos(textAngle) * (radius / 1.6);
         const textY = center.y + Math.sin(textAngle) * (radius / 1.6);
         ctx.fillStyle = "#ffffff";
@@ -279,17 +254,13 @@
         ctx.restore();
       }
     }
-
-    // 5. 회전 애니메이션 로직 + 팝업 호출
     const wheelContainer = document.getElementById("roulette-container");
     let currentRotation = 0;
-
     function spinWheel() {
       if (menuItems.length === 0) return;
       const num = menuItems.length;
       const degPerSlice = 360 / num;
       const randomIndex = Math.floor(Math.random() * num);
-
       const centerAngle = randomIndex * degPerSlice + degPerSlice / 2;
       const currentAbs = currentRotation % 360;
       const currentSliceAbs = (centerAngle + currentAbs) % 360;
@@ -298,7 +269,6 @@
       const baseRotation = 360 * 3;
       const finalRotation = baseRotation + offset;
       const nextRotation = currentRotation + finalRotation;
-
       gsap.to(wheelContainer, {
         rotation: nextRotation,
         duration: 5,
@@ -307,46 +277,30 @@
           currentRotation = nextRotation % 360;
           const selected = menuItems[randomIndex];
           resultDiv.textContent = `선택된 메뉴: ${selected}`;
-          showPopup(selected); // 팝업 호출
+          showPopup(selected);
         }
       });
     }
-
     document.getElementById("spin-button").addEventListener("click", spinWheel);
-
-    // 6. 팝업 표시 함수 (이모지 팡팡 효과 포함)
     function showPopup(selectedItem) {
       popupContent.innerHTML = `<div>오늘의 점심: ${selectedItem}</div>`;
       popupOverlay.style.visibility = 'visible';
       popupOverlay.style.opacity = '1';
-
-      // 10개의 이모지 생성
       for (let i = 0; i < 10; i++) {
         const emoji = document.createElement("div");
         emoji.classList.add("emoji");
         const emojiList = ["🎉", "🍽️", "🍕", "🍔", "🍣", "🍜"];
         emoji.textContent = emojiList[Math.floor(Math.random() * emojiList.length)];
-        // 위치 랜덤 설정
         emoji.style.left = Math.random() * 80 + '%';
         emoji.style.top = Math.random() * 80 + '%';
         popupContent.appendChild(emoji);
-        // 일정 시간 후 제거
-        setTimeout(() => {
-          emoji.remove();
-        }, 1500);
+        setTimeout(() => { emoji.remove(); }, 1500);
       }
-
-      // 2초 뒤 팝업 닫기
       setTimeout(() => {
         popupOverlay.style.opacity = '0';
-        setTimeout(() => {
-          popupOverlay.style.visibility = 'hidden';
-          popupContent.innerHTML = '';
-        }, 300);
+        setTimeout(() => { popupOverlay.style.visibility = 'hidden'; popupContent.innerHTML = ''; }, 300);
       }, 2000);
     }
-
-    // 7. 메뉴 추가 로직 (기존 유지)
     document.getElementById("add-button").addEventListener("click", () => {
       const input = document.getElementById("menu-input");
       const newItem = input.value.trim();
@@ -357,17 +311,11 @@
         drawWheel();
       }
     });
-
-    // 엔터 키로도 추가 (기존 유지)
-    document.getElementById("menu-input").addEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
-        document.getElementById("add-button").click();
-      }
-    });
-
-    // 초기 렌더링
+    document.getElementById("menu-input").addEventListener("keypress", (e) => { if (e.key === "Enter") { document.getElementById("add-button").click(); } });
+    setCanvasSize();
     renderMenuList();
     drawWheel();
+    window.addEventListener('resize', () => { setCanvasSize(); drawWheel(); });
   </script>
 </body>
 </html>
